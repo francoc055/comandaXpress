@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CARTA</title>
-    <link rel="stylesheet" href="./../style.css">
+    <link rel="stylesheet" href="./../../style.css">
     <script src="./../script/carta.js" defer></script>
 </head>
 <body style="background-color: rgba(32,32,32,255);">
@@ -35,15 +35,15 @@
 
             </section>
 
-            <section class="my-2 w-56 border bg-zinc-800 rounded-2xl">
+            <section class="flex flex-col items-center">
                 <h2 class="text-white text-center underline">Detalle</h2>
-                <ul class="ml-7 list-disc">
-                    <li class="mb-2">Elemento 1</li>
-                    <li class="mb-2">Elemento 2</li>
-                    <li class="mb-2">Elemento 3</li>
-                    <li class="mb-2">Elemento 4</li>
-                </ul>
+                <div id="listado" class="max-h-52 my-2 w-56 border bg-zinc-800 rounded overflow-y-auto">
+                    <ul id="lista" class="ml-7 list-disc">
+                    </ul>
+                </div>
+                <button class="w-16 bg-zinc-800 text-white p-1 border rounded">enviar</button>
             </section>
+            
         </div>
         
         

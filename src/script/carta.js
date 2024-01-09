@@ -23,6 +23,7 @@ const productos = [
 
 const seccionProductos = document.getElementById('seccion-productos');
 
+//creacion de los distintos productos dinamicamente.
 const CreateCardProductos = (productos)=>{
 
     for (const key in productos) {
@@ -53,6 +54,7 @@ const CreateCardProductos = (productos)=>{
         btnSumar.classList.add('p-1', 'text-2xl', 'rounded-2xl', 'transition-colors', 'duration-500', 'hover:bg-zinc-700')
         btnSumar.textContent = '+';
         const btnRestar = document.createElement('button');
+        btnRestar.setAttribute("id", "btnRestar");
         btnRestar.classList.add('px-2', 'py-1', 'text-2xl', 'rounded-2xl', 'transition-colors', 'duration-500', 'hover:bg-zinc-700')
         btnRestar.textContent = '-';
         contenedorBtn.appendChild(btnSumar);
@@ -67,28 +69,77 @@ const CreateCardProductos = (productos)=>{
 
 CreateCardProductos(productos);
 
-/*
-<article class="my-2 flex justify-center items-center w-64 h-14 border rounded-2xl bg-zinc-800">
-    <div class="w-full flex justify-around items-center">
-        <h2 class="m-1 text-white">milanesa</h2>
-        <p class="m-1 text-white">$4500</p>
-        <div class="m-1">
-            <button class="p-1 text-2xl rounded-2xl transition-colors duration-500 hover:bg-zinc-700">+</button>
-            <button class="px-2 py-1 text-2xl rounded-2xl transition-colors duration-500 hover:bg-zinc-700">-</button>
-        </div>
-        <!-- cantidad -->
-        <p class="bg-zinc-700 text-white px-2 py-1 rounded-xl">0</p>
-    </div>
-</article>
-*/
-
 
 document.addEventListener('click', (e)=>{
     if(e.target.id == 'btnSumar')
     {
-        // console.log();
         const id = e.target.parentElement.parentElement.dataset.id;
         const producto = productos.filter(x => x.id == id);
-        console.log(producto);
+        AddItemsList(producto);
+    }
+    else if(e.target.id == 'btnRestar')
+    {
+        const id = e.target.parentElement.parentElement.dataset.id;
+        const producto = productos.filter(x => x.id == id);
+        RemoveItemList(producto[0].id);
     }
 });
+
+const $lista = document.getElementById('lista');
+
+//agrega elementos a la lista de detalles del pedido
+const AddItemsList = (producto)=>{
+
+    const li = document.createElement('li');
+    const cantidad = document.createElement('span');
+    cantidad.textContent = '1';
+    li.classList.add('text-white', 'mb-3');
+    li.setAttribute('data-id', producto[0].id);
+    li.textContent = producto[0].nombre + ' ' + producto[0].precio + ' x';
+    li.appendChild(cantidad);
+    $lista.appendChild(li);
+}
+
+//verifica que si se repita el producto se le suma la cantidad.
+const VerificarRepeticionItem = (id)=>{
+
+    if($lista.children.length > 0)
+    {
+        for(let i = 0; i < $lista.children.length; i++)
+        {
+            if($lista.children[i].dataset.id == id)
+            {
+                // console.log();
+                $lista.children[i].children[0].textContent = parseInt($lista.children[i].children[0].textContent) + 1;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+//elimina elementos de la lista de detalles del pedido
+const RemoveItemList = (id)=>{
+    if($lista.children.length > 0)
+    {
+        for(let i = 0; i < $lista.children.length; i++)
+        {
+            if($lista.children[i].dataset.id == id)
+            {
+                if($lista.children[i].children[0].textContent == 1)
+                {
+                    $lista.removeChild($lista.children[i]);
+                }
+                else
+                {
+                    $lista.children[i].children[0].textContent = parseInt($lista.children[i].children[0].textContent) - 1;
+                }
+
+                return true;
+            }
+        }
+    }
+}
+
+
