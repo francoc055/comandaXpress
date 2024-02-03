@@ -38,7 +38,7 @@ const getProductos = async ()=>{
 }
 
 const insertarPedidoProducto = (pedidoProducto)=>{
-    fetch(URL + 'PedidoProducto/agregar', {
+    return fetch(URL + 'PedidoProducto/agregar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -46,19 +46,57 @@ const insertarPedidoProducto = (pedidoProducto)=>{
         body: JSON.stringify(pedidoProducto)
     })
     .then(response => {
-        if (!response.ok) {
-          throw new Error(`Error en la solicitud: ${response.status}`);
+        if(response.status == 201)
+        {
+            return response.status;
         }
+        else
+        {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+        }        
+    })
+    .catch(error => {
+        console.error('PUT Error:', error);
+        throw error;
+    });
 
-        return response.status;
-        // return response.json(); // Puedes devolver la respuesta del servidor si es relevante
-      })
+}
 
+async function cambiarEstadoMesa(nuevoEstado, id){
+    try{
+        const response = await fetch(`${URL}Mesa/actualizarEstado/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nuevoEstado)
+        })
+        return response;
+    }
+    catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+}
+
+const GetPedidosProductos = async () =>{
+    try{
+        const res = await fetch(`${URL}PedidoProducto/pedidosProductos`);
+        const data = await res.json();
+        return data ;
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
 }
 
 export{
     getMesasVacias,
     getProductos,
     insertarPedidoProducto,
-    getMesas
+    getMesas,
+    cambiarEstadoMesa, 
+    GetPedidosProductos
 }

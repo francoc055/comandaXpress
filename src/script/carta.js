@@ -1,36 +1,10 @@
 import { getMesasVacias, getProductos, insertarPedidoProducto } from "./../services/fetchService.js";
 
-// const productos = [
-//     {
-//         id: 1,
-//         nombre: "milanesa",
-//         precio: "$4500"
-//     },
-//     {
-//         id: 2,
-//         nombre: "papas con cheddar",
-//         precio: "$2300"
-//     },
-//     {
-//         id: 3,
-//         nombre: "vino circus",
-//         precio: "$2350"
-//     },
-//     {
-//         id: 4,
-//         nombre: "cerveza andes",
-//         precio: "$2500"
-//     }
-// ]
-
-
-
-
 
 const seccionProductos = document.getElementById('seccion-productos');
 const $seccionMesas = document.getElementById('seccion-mesas');
 const productos = await getProductos();
-const mesas = await getMesasVacias();
+// const mesas = await getMesasVacias();
 const $lista = document.getElementById('lista');
 
 //creacion de los distintos productos dinamicamente.
@@ -81,7 +55,8 @@ CreateCardProductos(productos);
 
 
 document.addEventListener('click', (e)=>{
-    if(e.target.id == 'btnSumar')
+    
+    if(e.target.id == 'btnSumar') //sumo productos al pedido.
     {
         const id = e.target.parentElement.parentElement.dataset.id;
         const producto = productos.filter(x => x.id == id);
@@ -91,13 +66,13 @@ document.addEventListener('click', (e)=>{
         }
         AddItemsList(producto);
     }
-    else if(e.target.id == 'btnRestar')
+    else if(e.target.id == 'btnRestar') //resto productos del pedido.
     {
         const id = e.target.parentElement.parentElement.dataset.id;
         const producto = productos.filter(x => x.id == id);
         RemoveItemList(producto[0].id);
     }
-    else if(e.target.id == 'btnEnviar')
+    else if(e.target.id == 'btnEnviar') //realizo peticion para insertar el pedido.
     {
         if($lista.children.length < 1)
         {
@@ -121,18 +96,28 @@ document.addEventListener('click', (e)=>{
             pedidoProducto.Productos.push(producto);
         }
 
-        const statusCode = insertarPedidoProducto(pedidoProducto);
-        if(response.status == 200)
-        {
-            Swal.fire("Pedido creado!");
+        insertarPedidoProducto(pedidoProducto)
+        .then(statusCode => {
+            if (statusCode === 201) {
+                Swal.fire("Pedido creado con exito!");
+                $seccionMesas.children[0].remove();
+                createSelectMesas();
+                removeProductos();
+            } else {
+                console.log("Error");
+            }
+        })
+        .catch(error => console.error('Error:', error));
 
-
-        }
-        // console.log(pedidoProducto);
     }
 });
 
-
+function removeProductos(){
+    while($lista.hasChildNodes())
+    {
+        $lista.removeChild($lista.firstChild);
+    }
+}
 
 //agrega elementos a la lista de detalles del pedido
 const AddItemsList = (producto)=>{
@@ -155,7 +140,6 @@ const VerificarRepeticionItem = (id)=>{
         {
             if($lista.children[i].dataset.id == id)
             {
-                // console.log();
                 $lista.children[i].children[0].textContent = parseInt($lista.children[i].children[0].textContent) + 1;
                 return true;
             }
@@ -188,7 +172,9 @@ const RemoveItemList = (id)=>{
     }
 }
 
-const createSelectMesas = (mesas)=>{
+//cargo selector con mesas vacias.
+const createSelectMesas = async ()=>{
+    const mesas = await getMesasVacias();
 
     const select = document.createElement("select");
     select.classList.add("w-44", "h-8", "mt-2", "rounded-md", "bg-zinc-400", "border", "text-zinc-800", "pl-2");
@@ -201,7 +187,7 @@ const createSelectMesas = (mesas)=>{
     }    
 }
 
-createSelectMesas(mesas);
+createSelectMesas();
 
 
 
