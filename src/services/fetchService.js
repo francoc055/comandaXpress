@@ -92,11 +92,70 @@ const GetPedidosProductos = async () =>{
     }
 }
 
+const PasarProductoAPreparacion = async (producto)=>{
+    try{
+
+        const res = await fetch(`${URL}PedidoProducto/ActualizarAPreparacion`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(producto)
+        })
+        return res;
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+}
+
+const PasarProductoAServir = async (producto)=>{
+    try{
+
+        const res = await fetch(`${URL}PedidoProducto/ActualizarAServir`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(producto)
+        })
+        return res;
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+}
+
+const Login = async (usuario)=>{
+    try{
+
+        const res = await fetch(`${URL}Usuario/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuario)
+        })
+        return res.text();
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+
+
+};
+
 export{
     getMesasVacias,
     getProductos,
     insertarPedidoProducto,
     getMesas,
     cambiarEstadoMesa, 
-    GetPedidosProductos
+    GetPedidosProductos,
+    PasarProductoAPreparacion,
+    PasarProductoAServir,
+    Login
 }
