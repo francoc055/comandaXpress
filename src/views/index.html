@@ -13,20 +13,14 @@
             <form class="flex flex-col justify-center items-center p-6">
                 <div class="mb-4 flex flex-col justify-center items-center">
                     <label for="nombre" class="text-gray-700">Nombre:</label>
-                    <input name="nombre" class="bg-gray-200 rounded-md px-4 py-2 w-48 focus:outline-none focus:ring focus:border-blue-300" type="text" placeholder="Nombre" autocomplete="off">
+                    <input name="nombre" class="bg-gray-200 rounded-md px-4 py-2 w-48 focus:outline-none focus:ring focus:border-blue-300" type="text" placeholder="Nombre" autocomplete="off" required>
                 </div>
                 <div class="mb-4 flex flex-col justify-center items-center">
                     <label for="clave" class="text-gray-700">Clave:</label>
-                    <input name="clave" class="bg-gray-200 rounded-md px-4 py-2 w-48 focus:outline-none focus:ring focus:border-blue-300" type="password" placeholder="Clave" autocomplete="off">
+                    <input name="clave" class="bg-gray-200 rounded-md px-4 py-2 w-48 focus:outline-none focus:ring focus:border-blue-300" type="password" placeholder="Clave" autocomplete="off" required>
                 </div>
                 <div class="mb-4 flex flex-col justify-center items-center">
-                    <label for="roles" class="text-gray-700">Rol:</label>
-                    <select id="roles" name="roles" class="bg-gray-200 rounded-md px-4 py-2 w-48 focus:outline-none focus:ring focus:border-blue-300">
-                        <option value="admin">Admin</option>
-                        <option value="mozo">Mozo</option>
-                        <option value="cocinero">Cocinero</option>
-                        <option value="bartender">Bartender</option>
-                    </select>
+
                 </div>
                 <button class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">Iniciar</button>
             </form>

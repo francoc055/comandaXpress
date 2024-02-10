@@ -1,9 +1,13 @@
-import { getMesas, cambiarEstadoMesa } from "../services/fetchService.js"
+import { getMesas, cambiarEstadoMesa, GetpedidosProductosParaServir } from "../services/fetchService.js"
 
-const mesas = await getMesas();
+const token = localStorage.getItem('token');
+const mesas = await getMesas(token);
 
 const $seccionMesas = document.getElementById("seccion-mesas");
 const $btnEstado = document.getElementById("btnEstado");
+
+const pps = await GetpedidosProductosParaServir(token);
+console.log(pps);
 
 //creacion de cards de las mesas con su informacion dinamicamente.
 const CreateCardsMesas = (mesas)=>{
@@ -83,7 +87,7 @@ document.addEventListener("click", async (e) => {
         const articulo = e.target.parentElement.parentElement;
         
         
-        const res = await cambiarEstadoMesa(nuevoEstado, id);
+        const res = await cambiarEstadoMesa(nuevoEstado, id, token);
         if(res.status == 204)
         {
             CambiarColorContenedorMesa(articulo, nuevoEstado);

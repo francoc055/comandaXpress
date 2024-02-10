@@ -1,48 +1,80 @@
 const URL = "https://localhost:7209/";
 
-const getMesasVacias = async ()=>{
+const getMesasVacias = async (token)=>{
     try{
-        const datos = await fetch(URL + "Mesa/MesasVacias");
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+
+        const datos = await fetch(URL + "Mesa/MesasVacias",
+        {
+            method: 'GET',
+            headers: headers
+        });
 
         const mesas = await datos.json();
     
         return mesas;
-    }catch{
-        return [];
+    }
+    catch(err){
+        console.error(err);
+        throw err;
     }
 }
 
-const getMesas = async ()=>{
+const getMesas = async (token)=>{
     try{
-        const datos = await fetch(URL + "Mesa/mesas");
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+        const datos = await fetch(URL + "Mesa/mesas",
+        {
+            method: 'GET',
+            headers: headers
+        });
 
         const mesas = await datos.json();
     
         return mesas;
-    }catch{
-        return [];
+    }    
+    catch(err){
+        console.error(err);
+        throw err;
     }
 }
 
-const getProductos = async ()=>{
+const getProductos = async (token)=>{
     try{
-        const datos = await fetch(URL + "Producto/productos");
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+        const datos = await fetch(URL + "Producto/productos",
+        {
+            method: 'GET',
+            headers: headers
+        });
 
         const productos = await datos.json();
     
         return productos;
     }
-    catch{
-        return [];
+    catch(err){
+        console.error(err);
+        throw err;
     }
 }
 
-const insertarPedidoProducto = (pedidoProducto)=>{
+const insertarPedidoProducto = (pedidoProducto, token)=>{
+    const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
     return fetch(URL + 'PedidoProducto/agregar', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify(pedidoProducto)
     })
     .then(response => {
@@ -62,13 +94,15 @@ const insertarPedidoProducto = (pedidoProducto)=>{
 
 }
 
-async function cambiarEstadoMesa(nuevoEstado, id){
+async function cambiarEstadoMesa(nuevoEstado, id, token){
     try{
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
         const response = await fetch(`${URL}Mesa/actualizarEstado/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify(nuevoEstado)
         })
         return response;
@@ -82,6 +116,10 @@ async function cambiarEstadoMesa(nuevoEstado, id){
 
 const GetPedidosProductos = async () =>{
     try{
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
         const res = await fetch(`${URL}PedidoProducto/pedidosProductos`);
         const data = await res.json();
         return data ;
@@ -92,14 +130,55 @@ const GetPedidosProductos = async () =>{
     }
 }
 
-const PasarProductoAPreparacion = async (producto)=>{
+const GetPedidosProductosCocinero = async (token) =>{
     try{
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+        const res = await fetch(`${URL}PedidoProducto/pedidosProductosCocinero`,
+        {
+            method: 'GET',
+            headers: headers
+        });
+        const data = await res.json();
+        return data ;
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+}
 
+const GetPedidosProductosBartender = async (token) =>{
+    try{
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+        const res = await fetch(`${URL}PedidoProducto/pedidosProductosBartender`,
+        {
+            method: 'GET',
+            headers: headers
+        });
+        const data = await res.json();
+        return data ;
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+}
+
+const PasarProductoAPreparacion = async (producto, token)=>{
+    try{
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
         const res = await fetch(`${URL}PedidoProducto/ActualizarAPreparacion`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify(producto)
         })
         return res;
@@ -110,14 +189,15 @@ const PasarProductoAPreparacion = async (producto)=>{
     }
 }
 
-const PasarProductoAServir = async (producto)=>{
+const PasarProductoAServir = async (producto, token)=>{
     try{
-
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
         const res = await fetch(`${URL}PedidoProducto/ActualizarAServir`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify(producto)
         })
         return res;
@@ -138,7 +218,7 @@ const Login = async (usuario)=>{
             },
             body: JSON.stringify(usuario)
         })
-        return res.text();
+        return res.json();
     }catch(err)
     {
         console.error(err);
@@ -148,6 +228,26 @@ const Login = async (usuario)=>{
 
 };
 
+
+const GetpedidosProductosParaServir = async (token) =>{
+    try{
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+        const res = await fetch(`${URL}PedidoProducto/pedidosProductosParaServir`,
+        {
+            method: 'GET',
+            headers: headers
+        });
+        const data = await res.json();
+        return data ;
+    }catch(err)
+    {
+        console.error(err);
+        throw err;
+    }
+}
 export{
     getMesasVacias,
     getProductos,
@@ -157,5 +257,8 @@ export{
     GetPedidosProductos,
     PasarProductoAPreparacion,
     PasarProductoAServir,
-    Login
+    Login,
+    GetPedidosProductosBartender,
+    GetPedidosProductosCocinero,
+    GetpedidosProductosParaServir
 }

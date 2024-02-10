@@ -1,10 +1,9 @@
 import { getMesasVacias, getProductos, insertarPedidoProducto } from "./../services/fetchService.js";
 
-
+const token = localStorage.getItem('token');
 const seccionProductos = document.getElementById('seccion-productos');
 const $seccionMesas = document.getElementById('seccion-mesas');
-const productos = await getProductos();
-// const mesas = await getMesasVacias();
+const productos = await getProductos(token);
 const $lista = document.getElementById('lista');
 
 //creacion de los distintos productos dinamicamente.
@@ -12,7 +11,7 @@ const CreateCardProductos = async (productos)=>{
 
     for (const key in productos) {
         const article = document.createElement('article');
-        article.classList.add('my-2', 'flex', 'justify-center', 'items-center', 'w-64', 'h-14', 'border', 'rounded-2xl', 'bg-zinc-400');
+        article.classList.add('my-2', 'flex', 'justify-center', 'items-center', 'w-64', 'h-14', 'border', 'rounded-2xl', 'bg-gray-100', 'shadow-xl');
         
         const contenedor = document.createElement('div');
         contenedor.setAttribute('data-id', productos[key].id);
@@ -96,7 +95,7 @@ document.addEventListener('click', (e)=>{
             pedidoProducto.Productos.push(producto);
         }
 
-        insertarPedidoProducto(pedidoProducto)
+        insertarPedidoProducto(pedidoProducto, token)
         .then(statusCode => {
             if (statusCode === 201) {
                 Swal.fire("Pedido creado con exito!");
@@ -174,10 +173,10 @@ const RemoveItemList = (id)=>{
 
 //cargo selector con mesas vacias.
 const createSelectMesas = async ()=>{
-    const mesas = await getMesasVacias();
+    const mesas = await getMesasVacias(token);
 
     const select = document.createElement("select");
-    select.classList.add("w-44", "h-8", "mt-2", "rounded-md", "bg-zinc-400", "border", "text-zinc-800", "pl-2");
+    select.classList.add("w-44", "h-8", "mt-2", "rounded-md", "bg-gray-100", "border", "text-zinc-800", "pl-2");
     $seccionMesas.appendChild(select);
     for (const key in mesas) {
         const option = document.createElement("option");

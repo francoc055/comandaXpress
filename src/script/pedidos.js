@@ -1,13 +1,26 @@
-import { GetPedidosProductos, PasarProductoAPreparacion, PasarProductoAServir} from "./../services/fetchService.js";
+import {  GetPedidosProductosBartender, GetPedidosProductosCocinero, PasarProductoAPreparacion, PasarProductoAServir} from "./../services/fetchService.js";
+import { DecodeToken } from "./../services/tokenService.js";
 
-
-
+const token = localStorage.getItem('token');
 const $seccionPedidos = document.getElementById("seccion-pedidos");
 
-
+const rol = DecodeToken(token);
 
 async function CreateCardPedidos() {
-    const pedidos = await GetPedidosProductos();
+    let pedidos = '';
+    if(rol == 'bartender')
+    {
+        pedidos = await GetPedidosProductosBartender(token);
+    }
+    else if(rol == 'cocinero')
+    {
+        pedidos = await GetPedidosProductosCocinero(token);
+    }
+    
+    if(pedidos == '')
+    {
+        return;
+    }
     pedidos.forEach(pedido => {
         const tiempoInput = pedido.estado === 'pendiente'
         ? `<label for="tiempoPreparacion" class="px-2">Tiempo</label><input type="number" class="w-16 border rounded p-1" id="tiempoPreparacion">`
@@ -26,7 +39,7 @@ async function CreateCardPedidos() {
         CambiarColorSegunEstado(articulo, pedido.estado);
         
         articulo.innerHTML += `
-        <h2 class="w-full p-3 bg-slate-50 text-center text-lg font-semibold rounded-t-lg">${pedido.nombre}</h2>
+        <h2 class="w-full p-3 bg-gray-200 text-center text-lg font-semibold rounded-t-lg">${pedido.nombre}</h2>
         <div class="flex justify-between w-full p-2">
         <span>Cantidad: ${pedido.cantidad}</span>
             <span>Mesa: ${pedido.idMesa}</span>
@@ -110,7 +123,7 @@ function CambiarEstado(targ)
     
 
     
-        PasarProductoAPreparacion(producto)
+        PasarProductoAPreparacion(producto, token)
         .then(res => {
             if(res.status == 204)
             {
@@ -121,7 +134,7 @@ function CambiarEstado(targ)
     }
     else if(producto.Estado == "servir")
     {
-        PasarProductoAServir(producto)
+        PasarProductoAServir(producto, token)
         .then(res => {
             if(res.status == 204)
             {

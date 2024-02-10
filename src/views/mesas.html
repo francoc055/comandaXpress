@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="./../../style.css">
     <script type="module" src="./../script/mesas.js" defer></script>
 </head>
-<body class="bg-zinc-900">
+<body class="bg-gray-100">
     <header class="w-full h-14">
-        <nav class="flex items-center justify-around p-1">
-            <svg class="w-10 h-10 bg-zinc-300 p-1 rounded cursor-pointer" version="1.1" id="food-meal-plate-restaurant" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        <nav class="flex items-center justify-around p-1 bg-gray-300">
+            <a href="./main.html"><svg class="w-10 h-10 bg-zinc-300 p-1 rounded cursor-pointer" version="1.1" id="food-meal-plate-restaurant" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 x="0px" y="0px" viewBox="0 0 64 64.001" style="enable-background:new 0 0 64 64.001;" xml:space="preserve">
             <path d="M33,17.001c-8.271,0-15,6.729-15,15s6.729,15,15,15s15-6.729,15-15S41.271,17.001,33,17.001z M33,45.001
                 c-7.168,0-13-5.832-13-13s5.832-13,13-13s13,5.832,13,13S40.168,45.001,33,45.001z"/>
@@ -28,16 +28,30 @@
                 C6.362,61.911,6,61.431,6,60.894V21.237c0-1.761-0.978-3.343-2.553-4.131C2.555,16.66,2,15.762,2,14.764V8.562l1.534,5.699
                 c0.121,0.45,0.527,0.744,1.002,0.74c0.465-0.017,0.857-0.353,0.945-0.811L7,6.296l1.518,7.894c0.088,0.458,0.48,0.793,0.945,0.811
                 c0.464,0.007,0.881-0.29,1.002-0.74L12,8.562v6.203C12,15.762,11.445,16.66,10.553,17.106z"/>
-            </svg>
-            <a href="./carta.html" class="text-zinc-200 text-xl">Carta</a>
+            </svg></a>
+            <a href="./carta.html" class="text-zinc-700 text-xl">Carta</a>
 
         </nav>
     </header>
     <main>
+        <div class="flex justify-center items-center">
+            <button id="btnServir" class="bg-gray-200 p-2 rounded-lg m-1">Para servir</button>
+            <button id="btnPendientes" class="bg-gray-200 p-2 rounded-lg m-1">Pendientes</button>
+        </div>
         <section id="seccion-mesas" class="w-full flex items-center justify-center flex-wrap">
             
         </section>
     </main>
+
+
+    <!-- <article class="w-44 h-44 bg-slate-400 m-7 flex flex-col items-center justify-around">
+        <h2 class="">mesa 1</h2>
+        <ul class="list-disc">
+            <li>milanesa</li>
+            <li>pizza</li>
+        </ul>
+        <button class="px-5 bg-gray-200 rounded-lg">servir</button>
+    </article> -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
